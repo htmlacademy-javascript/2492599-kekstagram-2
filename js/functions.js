@@ -51,3 +51,16 @@ console.log(getNumber('а я томат'));           // NaN
 console.log(getNumber(2023)); // 2023
 console.log(getNumber(-1));   // 1
 console.log(getNumber(1.5));  // 15
+
+const checkOvertime = (timeStart, timeEnd, meetingStartTime, meetingDurationTime) => {
+
+  const minutes = [timeStart, timeEnd, meetingStartTime].map((value) => value.split(':')[0] * 60 + Number(value.split(':')[1]));
+
+  return !(minutes[2] + meetingDurationTime > minutes[1] || minutes[2] < minutes[0]);
+};
+
+  console.log(checkOvertime('08:00', '17:30', '14:00', 90)); // true
+  console.log(checkOvertime('8:0', '10:0', '8:0', 120));     // true
+  console.log(checkOvertime('08:00', '14:30', '14:00', 90)); // false
+  console.log(checkOvertime('14:00', '17:30', '08:0', 90));  // false
+  console.log(checkOvertime('8:00', '17:30', '08:00', 900)); // false
