@@ -1,4 +1,6 @@
 import {PHOTOSNUMBERS} from './constants.js';
 import {createPhotoesInfo} from './getPictureData.js';
+import { renderPictures } from './renderPictures.js';
 
-console.log(createPhotoesInfo(PHOTOSNUMBERS));
+const pictures = createPhotoesInfo(PHOTOSNUMBERS);
+renderPictures(pictures);
