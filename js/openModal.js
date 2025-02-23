@@ -1,5 +1,5 @@
 import { COMMENT_STEP } from './constants.js';
-import { isEscapeKey } from './utils.js';
+import { removeEscapeControl, setEscapeControl } from './escControl.js';
 
 const body = document.querySelector('body');
 const pictureModalElement = document.querySelector('.big-picture');
@@ -17,18 +17,15 @@ const commentTemplate = commentsList.querySelector('.social__comment');
 let localComments;
 let renderedCommets = 0;
 
-const onDocumentKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closeModal();
-  }
+const closeModal = () => {
+  pictureModalElement.classList.add('hidden');
+  body.classList.remove('modal-open');
 };
 
 const showModal = () => {
   pictureModalElement.classList.remove('hidden');
   body.classList.add('modal-open');
-
-  document.addEventListener('keydown', onDocumentKeydown);
+  setEscapeControl(closeModal);
 };
 
 const renderStatistic = () => {
@@ -84,14 +81,7 @@ export const openModal = (data) => {
   renderModal(data);
 };
 
-const closeModal = () => {
-  pictureModalElement.classList.add('hidden');
-
-  body.classList.remove('modal-open');
-
-  document.removeEventListener('keydown', onDocumentKeydown);
-};
-
 pictureModalCloseElement.addEventListener('click', () => {
   closeModal();
+  removeEscapeControl();
 });
