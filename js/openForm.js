@@ -1,8 +1,10 @@
-import { isEscapeKey } from './utils';
 import { isValid } from './validator.js';
 import { reset as resetValidation } from './validator.js';
 import { reset as resetScale } from './scale.js';
 import { reset as resetFilters } from './filters.js';
+import { removeEscapeControl, setEscapeControl } from './escControl.js';
+import { sendData } from './api.js';
+import { showPopup } from './popups.js';
 
 const body = document.querySelector('body');
 const form = body.querySelector('.img-upload__form');
@@ -15,18 +17,7 @@ const formFields = form.querySelector('.img-upload__text');
 const hashtagsInput = formFields.querySelector('.text__hashtags');
 const commentInput = formFields.querySelector('.text__description');
 
-const onDocumentKeydown = (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.preventDefault();
-    closeForm();
-  }
-};
-
-export const openForm = () => {
-  editorForm.classList.remove('hidden');
-  body.classList.add('modal-open');
-  document.addEventListener('keydown', onDocumentKeydown);
-};
+const closeFormFlag = () => !(document.activeElement === hashtagsInput || document.activeElement === commentInput);
 
 const closeForm = () => {
   editorForm.classList.add('hidden');
@@ -35,11 +26,18 @@ const closeForm = () => {
   resetValidation();
   resetScale();
   resetFilters();
-  document.removeEventListener('keydown', onDocumentKeydown);
 };
 
-cancelFormButton.addEventListener('click', () => {
+export const openForm = () => {
+  editorForm.classList.remove('hidden');
+  body.classList.add('modal-open');
+  setEscapeControl(closeForm, closeFormFlag);
+};
+
+cancelFormButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
   closeForm();
+  removeEscapeControl();
 });
 
 pictureInput.addEventListener('change', () => {
@@ -49,18 +47,14 @@ pictureInput.addEventListener('change', () => {
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
   if (isValid) {
-    console.log('Можно отправлять');
-  }
-});
-
-hashtagsInput.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.stopPropagation();
-  }
-});
-
-commentInput.addEventListener('keydown', (evt) => {
-  if (isEscapeKey(evt)) {
-    evt.stopPropagation();
+    sendData(new FormData(evt.target))
+      .then(()=>{
+        closeForm();
+        removeEscapeControl();
+        showPopup('success');
+      })
+      .catch(() => {
+        showPopup('error');
+      });
   }
 });

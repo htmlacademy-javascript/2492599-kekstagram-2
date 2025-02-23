@@ -62,3 +62,5 @@ export const FILTERS_SETTINGS = {
     units: ''
   }
 };
+
+export const ALERT_TIME = 5000;
