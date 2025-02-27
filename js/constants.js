@@ -1,4 +1,3 @@
-export const PHOTOSNUMBERS = 25;
 export const COMMENT_STEP = 5;
 export const HASHTAG_TEMPLATE = /^#[a-zа-яё0-9]{1,19}$/i;
 export const MAX_HASHTAG_COUNT = 5;
@@ -71,4 +70,11 @@ export const PictureFilters = {
   DEFAULT: 'filter-default',
   DISCUSSED: 'filter-discussed',
   RANDOM: 'filter-random'
+};
+
+export const PICTURE_TYPES = ['.jpg', '.jpeg', '.png'];
+
+export const SubmitButtonText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Публикую'
 };

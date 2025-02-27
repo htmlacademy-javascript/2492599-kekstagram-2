@@ -5,6 +5,8 @@ import { reset as resetFilters } from './filters.js';
 import { removeEscapeControl, setEscapeControl } from './escControl.js';
 import { sendData } from './api.js';
 import { showPopup } from './popups.js';
+import { uploadFile } from './uploadPicture.js';
+import { SubmitButtonText } from './constants.js';
 
 const body = document.querySelector('body');
 const form = body.querySelector('.img-upload__form');
@@ -41,12 +43,19 @@ cancelFormButton.addEventListener('click', (evt) => {
 });
 
 pictureInput.addEventListener('change', () => {
+  uploadFile();
   openForm();
 });
 
+const blockSubmitButton = (isBlocked = true) => {
+  submitFormButton.disabled = isBlocked;
+  submitFormButton.textContent = isBlocked ? SubmitButtonText.SENDING : SubmitButtonText.IDLE;
+};
+
 form.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  if (isValid) {
+  if (isValid()) {
+    blockSubmitButton();
     sendData(new FormData(evt.target))
       .then(()=>{
         closeForm();
@@ -55,6 +64,9 @@ form.addEventListener('submit', (evt) => {
       })
       .catch(() => {
         showPopup('error');
+      })
+      .finally(() => {
+        blockSubmitButton(false);
       });
   }
 });
