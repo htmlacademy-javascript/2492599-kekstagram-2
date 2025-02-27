@@ -64,3 +64,11 @@ export const FILTERS_SETTINGS = {
 };
 
 export const ALERT_TIME = 5000;
+export const RANDOM_PICTURE_COUNT = 10;
+export const TIMEOUT_DELAY = 500;
+
+export const PictureFilters = {
+  DEFAULT: 'filter-default',
+  DISCUSSED: 'filter-discussed',
+  RANDOM: 'filter-random'
+};

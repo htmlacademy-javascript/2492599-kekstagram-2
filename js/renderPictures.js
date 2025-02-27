@@ -1,14 +1,21 @@
-import { openModal } from "./openModal";
+import { openModal } from './openModal.js';
 
 const picturesContainer = document.querySelector('.pictures');
-// const pictureList = pictureContainer.children;
 
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
 let localData;
 
+const clearPictureList = () => {
+  const currentPictures = document.querySelectorAll('.picture');
+  if (currentPictures) {
+    currentPictures.forEach((element) => element.remove());
+  }
+};
+
 export const renderPictures = (picturesData) => {
   localData = [...picturesData];
+  clearPictureList();
   const picturesListFragment = document.createDocumentFragment();
 
   picturesData.forEach((picture) => {

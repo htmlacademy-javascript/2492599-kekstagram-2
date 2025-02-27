@@ -1,4 +1,4 @@
-import { ALERT_TIME } from './constants.js';
+import { ALERT_TIME, TIMEOUT_DELAY } from './constants.js';
 
 export const getRandomNumber = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -35,4 +35,12 @@ export const showAlert = () => {
   setTimeout(() => {
     dataErrorAlert.remove();
   }, ALERT_TIME);
+};
+
+export const debounce = (callback, timeoutDelay = TIMEOUT_DELAY) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
 };
